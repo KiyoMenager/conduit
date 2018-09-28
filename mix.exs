@@ -20,7 +20,7 @@ defmodule Conduit.Mixfile do
   def application do
     [
       mod: {Conduit.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :eventstore]
     ]
   end
 
@@ -38,7 +38,9 @@ defmodule Conduit.Mixfile do
       {:phoenix_ecto, "~> 3.2"},
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"}
+      {:cowboy, "~> 1.0"},
+      {:commanded, "~> 0.15"},
+      {:commanded_eventstore_adapter, "~> 0.3"}
     ]
   end
 
