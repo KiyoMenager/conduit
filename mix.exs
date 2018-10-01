@@ -6,9 +6,9 @@ defmodule Conduit.Mixfile do
       app: :conduit,
       version: "0.0.1",
       elixir: "~> 1.4",
-      elixirc_paths: elixirc_paths(Mix.env),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers,
-      start_permanent: Mix.env == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
     ]
@@ -26,7 +26,7 @@ defmodule Conduit.Mixfile do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
   #
@@ -44,7 +44,8 @@ defmodule Conduit.Mixfile do
       {:ex_machina, "~> 2.0", only: :test},
       {:uuid, "~> 1.1"},
       {:exconstructor, "~> 1.1"},
-      {:mix_test_watch, "~> 0.5", only: :dev, runtime: false}
+      {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
+      {:commanded_ecto_projections, "~> 0.6"}
     ]
   end
 
@@ -58,7 +59,7 @@ defmodule Conduit.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end
