@@ -48,7 +48,8 @@ defmodule Conduit.Mixfile do
       {:commanded_ecto_projections, "~> 0.6"},
       {:vex, "~> 0.6"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:comeonin, "~> 4.0"}
+      {:comeonin, "~> 4.0"},
+      {:guardian, "~> 0.14"}
     ]
   end
 

@@ -23,13 +23,18 @@ defmodule ConduitWeb.SessionControllerTest do
       }
 
       conn = post(conn, session_path(conn, :create), user: params)
+      json = json_response(conn, 201)["user"]
+      token = json["token"]
 
-      assert json_response(conn, 201)["user"] == %{
+      assert json == %{
                "email" => user_attrs.email,
                "username" => user_attrs.username,
+               "token" => token,
                "bio" => nil,
                "image" => nil
              }
+
+      refute token == ""
     end
 
     @tag :web

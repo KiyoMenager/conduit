@@ -2,7 +2,9 @@ defmodule ConduitWeb.Router do
   use ConduitWeb, :router
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
+    plug(Guardian.Plug.VerifyHeader, realm: "Token")
+    plug(Guardian.Plug.LoadResource)
   end
 
   scope "/api", ConduitWeb do
