@@ -14,4 +14,11 @@ defmodule Conduit.Accounts.User.Commands.RegisterUser do
   validates(:username, presence: [message: "can't be empty"], string: true, unique_username: true)
   validates(:email, presence: [message: "can't be empty"], string: true)
   validates(:hashed_password, presence: [message: "can't be empty"], string: true)
+
+  defimpl Conduit.Support.Middleware.Uniqueness.UniqueFields do
+    def unique(_),
+      do: [
+        {:username, "has already been taken"}
+      ]
+  end
 end
