@@ -12,6 +12,8 @@ defmodule Conduit.Application do
       supervisor(Conduit.Repo, []),
       # Start the endpoint when the application starts
       supervisor(ConduitWeb.Endpoint, []),
+      # Accounts supervisor
+      supervisor(Conduit.Accounts.Supervisor, [])
       # Start your own worker by calling: Conduit.Worker.start_link(arg1, arg2, arg3)
       # worker(Conduit.Worker, [arg1, arg2, arg3]),
     ]
