@@ -30,3 +30,5 @@ config :eventstore, EventStore.Storage,
   pool_size: 1
 
 # pool: Ecto.Adapters.SQL.Sandbox
+
+config :comeonin, :bcrypt_log_rounds, 4

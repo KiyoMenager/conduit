@@ -5,7 +5,7 @@ defmodule Conduit.Factory do
     %{
       email: "seb@example.com",
       username: "sebastian",
-      hashed_password: "password",
+      password: "password",
       bio: "I like music",
       image: "https://i.stack.imgur.com/xHWG8.jpg"
     }
