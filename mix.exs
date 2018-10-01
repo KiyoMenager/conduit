@@ -45,7 +45,8 @@ defmodule Conduit.Mixfile do
       {:uuid, "~> 1.1"},
       {:exconstructor, "~> 1.1"},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
-      {:commanded_ecto_projections, "~> 0.6"}
+      {:commanded_ecto_projections, "~> 0.6"},
+      {:vex, "~> 0.6"}
     ]
   end
 
