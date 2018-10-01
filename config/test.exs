@@ -16,8 +16,9 @@ config :conduit, Conduit.Repo,
   password: "postgres",
   database: "conduit_readstore_test",
   hostname: "localhost",
-  # pool_size: 1
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool_size: 1
+
+# pool: Ecto.Adapters.SQL.Sandbox
 
 # Configure the event store database
 config :eventstore, EventStore.Storage,
@@ -26,5 +27,6 @@ config :eventstore, EventStore.Storage,
   password: "postgres",
   database: "conduit_eventstore_test",
   hostname: "localhost",
-  # pool_size: 1
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool_size: 1
+
+# pool: Ecto.Adapters.SQL.Sandbox
