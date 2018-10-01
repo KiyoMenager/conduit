@@ -4,9 +4,17 @@ defmodule Conduit.Accounts do
   """
 
   alias Conduit.Accounts.User.Commands.RegisterUser
+  alias Conduit.Accounts.User.Queries.UserByName
   alias Conduit.Accounts.Projections.User
   alias Conduit.Repo
   alias Conduit.Router
+
+  def user_by_username(username) do
+    username
+    |> String.downcase()
+    |> UserByName.new()
+    |> Repo.one()
+  end
 
   def register_user(attrs \\ %{}) do
     uuid = UUID.uuid4()

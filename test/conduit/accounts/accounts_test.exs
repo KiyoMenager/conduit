@@ -25,5 +25,16 @@ defmodule Conduit.AccountsTest do
       assert {:validation_failure, errors} = reason
       assert errors == %{username: ["can't be empty"]}
     end
+
+    @tag :integration
+    test "should fail when username already taken and return error" do
+      attrs = build(:user_aggregate)
+
+      assert {:ok, %User{}} = Accounts.register_user(attrs)
+      assert {:error, reason} = Accounts.register_user(attrs)
+
+      assert {:validation_failure, errors} = reason
+      assert errors == %{username: ["has already been taken"]}
+    end
   end
 end
