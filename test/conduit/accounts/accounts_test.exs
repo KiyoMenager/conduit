@@ -47,5 +47,22 @@ defmodule Conduit.AccountsTest do
       end)
       |> Enum.map(&Task.await/1)
     end
+
+    @tag :integration
+    test "should fail when username format is invalid and return error" do
+      attrs = build(:user_aggregate, username: "addr@example.com")
+      assert {:error, reason} = Accounts.register_user(attrs)
+
+      assert {:validation_failure, errors} = reason
+      assert errors == %{username: ["is invalid"]}
+    end
+
+    @tag :integration
+    test "should convert username to lowercase" do
+      attrs = build(:user_aggregate, username: "UPPERCASE")
+      assert {:ok, %User{} = user} = Accounts.register_user(attrs)
+
+      assert user.username == "uppercase"
+    end
   end
 end

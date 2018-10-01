@@ -9,7 +9,10 @@ defmodule Conduit.Accounts do
   alias Conduit.Repo
   alias Conduit.Router
 
-  def user_by_username(username) do
+  @doc """
+  Gets an existing user by their username, or return nil
+  """
+  def user_by_username(username) when is_binary(username) do
     username
     |> String.downcase()
     |> UserByName.new()
@@ -21,8 +24,9 @@ defmodule Conduit.Accounts do
 
     register_user =
       attrs
-      |> assign(:user_uuid, uuid)
       |> RegisterUser.new()
+      |> RegisterUser.assign_uuid(uuid)
+      |> RegisterUser.downcase_username()
 
     with :ok <- Router.dispatch(register_user, consistency: :strong) do
       read(User, uuid)
@@ -36,9 +40,5 @@ defmodule Conduit.Accounts do
       nil -> {:error, :not_found}
       projection -> {:ok, projection}
     end
-  end
-
-  defp assign(attrs, key, val) do
-    Map.put(attrs, key, val)
   end
 end
