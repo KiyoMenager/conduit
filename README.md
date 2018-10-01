@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/KiyoMenager/conduit.svg?style=svg&circle-token=ced0c206d2b149c8f5e8c66f5f11a51a4c33d3ed)](https://circleci.com/gh/KiyoMenager/conduit)
+
 # Conduit
 
 To start your Phoenix server:
