@@ -20,13 +20,17 @@ defmodule ConduitWeb.UserControllerTest do
 
       conn = post(conn, user_path(conn, :create), user: attrs)
       assert json = json_response(conn, 201)["user"]
+      token = json["token"]
 
       assert json == %{
                "email" => attrs.email,
                "username" => attrs.username,
+               "token" => token,
                "image" => nil,
                "bio" => nil
              }
+
+      assert token
     end
 
     @tag :web
@@ -52,6 +56,44 @@ defmodule ConduitWeb.UserControllerTest do
                  "has already been taken"
                ]
              }
+    end
+  end
+
+  describe "get current user" do
+    @tag :web
+    test "should return user when authenticated", %{conn: conn} do
+      conn = get(authenticated_conn(conn), user_path(conn, :current))
+      json = json_response(conn, 200)["user"]
+
+      token = json["token"]
+      email = json["email"]
+      username = json["username"]
+
+      assert json == %{
+               "email" => email,
+               "username" => username,
+               "token" => token,
+               "image" => nil,
+               "bio" => nil
+             }
+
+      assert email
+      assert username
+      assert token
+    end
+  end
+
+  @tag :web
+  test "should not return user when not authenticated", %{conn: conn} do
+    conn = get(conn, user_path(conn, :current))
+
+    assert response(conn, 401) == ""
+  end
+
+  def authenticated_conn(conn) do
+    with {:ok, user} <- fixture(:user),
+         {:ok, jwt} <- ConduitWeb.JWT.generate_jwt(user) do
+      put_req_header(conn, "authorization", "Token " <> jwt)
     end
   end
 end
