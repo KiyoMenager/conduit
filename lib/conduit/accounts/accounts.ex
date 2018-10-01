@@ -4,7 +4,7 @@ defmodule Conduit.Accounts do
   """
 
   alias Conduit.Accounts.User.Commands.RegisterUser
-  alias Conduit.Accounts.User.Queries.UserByName
+  alias Conduit.Accounts.User.Queries.{UserByName, UserByEmail}
   alias Conduit.Accounts.Projections.User
   alias Conduit.Repo
   alias Conduit.Router
@@ -19,6 +19,16 @@ defmodule Conduit.Accounts do
     |> Repo.one()
   end
 
+  @doc """
+  Gets an existing user by their email address, or return nil
+  """
+  def user_by_email(email) when is_binary(email) do
+    email
+    |> String.downcase()
+    |> UserByEmail.new()
+    |> Repo.one()
+  end
+
   def register_user(attrs \\ %{}) do
     uuid = UUID.uuid4()
 
@@ -27,6 +37,7 @@ defmodule Conduit.Accounts do
       |> RegisterUser.new()
       |> RegisterUser.assign_uuid(uuid)
       |> RegisterUser.downcase_username()
+      |> RegisterUser.downcase_email()
 
     with :ok <- Router.dispatch(register_user, consistency: :strong) do
       read(User, uuid)

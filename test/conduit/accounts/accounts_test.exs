@@ -31,7 +31,9 @@ defmodule Conduit.AccountsTest do
       attrs = build(:user_aggregate)
 
       assert {:ok, %User{}} = Accounts.register_user(attrs)
-      assert {:error, reason} = Accounts.register_user(attrs)
+
+      assert {:error, reason} =
+               Accounts.register_user(Map.put(attrs, :email, "unique@example.com"))
 
       assert {:validation_failure, errors} = reason
       assert errors == %{username: ["has already been taken"]}
@@ -63,6 +65,45 @@ defmodule Conduit.AccountsTest do
       assert {:ok, %User{} = user} = Accounts.register_user(attrs)
 
       assert user.username == "uppercase"
+    end
+
+    @tag :integration
+    test "should fail when email already taken and return error" do
+      attrs = build(:user_aggregate, email: "taken@example.com")
+
+      assert {:ok, %User{}} = Accounts.register_user(attrs)
+      assert {:error, reason} = Accounts.register_user(Map.put(attrs, :username, "unique0"))
+
+      assert {:validation_failure, errors} = reason
+      assert errors == %{email: ["has already been taken"]}
+    end
+
+    @tag :integration
+    test "should fail when registering identical email at same time and return error" do
+      1..2
+      |> Enum.map(fn x ->
+        Task.async(fn ->
+          Accounts.register_user(build(:user_aggregate, username: "unique#{x}"))
+        end)
+      end)
+      |> Enum.map(&Task.await/1)
+    end
+
+    @tag :integration
+    test "should fail when email format is invalid and return error" do
+      attrs = build(:user_aggregate, email: "invalid")
+      assert {:error, reason} = Accounts.register_user(attrs)
+
+      assert {:validation_failure, errors} = reason
+      assert errors == %{email: ["is invalid"]}
+    end
+
+    @tag :integration
+    test "should convert email to lowercase" do
+      attrs = build(:user_aggregate, email: "UPPERCASE@example.com")
+      assert {:ok, %User{} = user} = Accounts.register_user(attrs)
+
+      assert user.email == "uppercase@example.com"
     end
   end
 end
