@@ -20,7 +20,7 @@ defmodule Conduit.Fixture do
   end
 
   def fixture(:user, attrs) do
-    build(:user, attrs) |> Accounts.register_user()
+    build(:user_aggregate, attrs) |> Accounts.register_user()
   end
 
   def fixture(:author, attrs) do

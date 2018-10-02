@@ -19,6 +19,7 @@ defmodule Conduit.Blog.ArticleTest do
           author_uuid: author_uuid,
           slug: Slugger.slugify_downcase(publish_article.title),
           title: publish_article.title,
+          body: publish_article.body,
           description: publish_article.description,
           tags: publish_article.tags
         }
