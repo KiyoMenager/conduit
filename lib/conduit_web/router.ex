@@ -13,5 +13,7 @@ defmodule ConduitWeb.Router do
     get("/users", UserController, :current)
     post("/users/login", SessionController, :create)
     post("/users", UserController, :create)
+
+    resources("/articles", ArticleController, except: [:new, :edit])
   end
 end

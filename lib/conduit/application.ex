@@ -14,6 +14,8 @@ defmodule Conduit.Application do
       supervisor(ConduitWeb.Endpoint, []),
       # Accounts supervisor
       supervisor(Conduit.Accounts.Supervisor, []),
+      # Blog supervisor
+      supervisor(Conduit.Blog.Supervisor, []),
       # Enforce unique constraints
       worker(Conduit.Support.Unique, [])
     ]
