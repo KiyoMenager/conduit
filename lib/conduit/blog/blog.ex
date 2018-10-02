@@ -5,9 +5,43 @@ defmodule Conduit.Blog do
 
   import Ecto.Query, warn: false
 
-  alias Conduit.Blog.Commands.CreateAuthor
+  alias Conduit.Blog.Commands.{CreateAuthor, PublishArticle}
   alias Conduit.Blog.Projections.Author
+  alias Conduit.Blog.Queries.ArticleBySlug
   alias Conduit.{Router, Repo}
+
+  @doc """
+  Gets a single author by uuid.
+
+  """
+  def get_author!(uuid) do
+    Repo.get(Author, uuid)
+  end
+
+  @doc """
+  Gets a single article by slug or return nil if not found.
+
+  """
+  def get_article_by_slug(slug) do
+    slug
+    |> ArticleBySlug.new()
+    |> Repo.one()
+  end
+
+  def publish_article(author, article_params) do
+    article_uuid = UUID.uuid4()
+
+    publish_article =
+      article_params
+      |> PublishArticle.new()
+      |> PublishArticle.assign_uuid(article_uuid)
+      |> PublishArticle.assign_author(author)
+      |> PublishArticle.generate_url_slug()
+
+    with :ok <- Router.dispatch(publish_article, consistency: :strong) do
+      read(Article, article_uuid)
+    end
+  end
 
   @doc """
   Creates an author.

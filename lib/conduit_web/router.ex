@@ -14,6 +14,6 @@ defmodule ConduitWeb.Router do
     post("/users/login", SessionController, :create)
     post("/users", UserController, :create)
 
-    resources("/articles", ArticleController, except: [:new, :edit])
+    post("/articles", ArticleController, :create)
   end
 end
