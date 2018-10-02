@@ -14,6 +14,7 @@ defmodule ConduitWeb.Router do
     post("/users/login", SessionController, :create)
     post("/users", UserController, :create)
 
+    get("/articles/:slug", ArticleController, :show)
     get("/articles", ArticleController, :index)
     post("/articles", ArticleController, :create)
   end

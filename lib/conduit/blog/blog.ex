@@ -29,6 +29,15 @@ defmodule Conduit.Blog do
   end
 
   @doc """
+  Get an article by its URL slug, or raise an `Ecto.NoResultsError` if not found
+  """
+  def get_article_by_slug!(slug) do
+    slug
+    |> ArticleBySlug.new()
+    |> Repo.one!()
+  end
+
+  @doc """
   Returns most recent articles (globally by default).
 
   Provide tag, author or favorited query parameters to filter query.

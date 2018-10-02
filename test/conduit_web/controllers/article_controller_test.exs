@@ -5,6 +5,47 @@ defmodule ConduitWeb.ArticleControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
+  describe "get article" do
+    setup [:create_author, :publish_articles]
+
+    @tag :web
+    test "should return published article by slug", %{
+      conn: conn,
+      author: author,
+      articles: articles
+    } do
+      searched_article = Enum.random(articles)
+
+      conn = get(conn, article_path(conn, :show, searched_article.slug))
+      json = json_response(conn, 200)
+      created_at = json["article"]["createdAt"]
+      updated_at = json["article"]["updatedAt"]
+
+      assert json == %{
+               "article" => %{
+                 "slug" => searched_article.slug,
+                 "title" => searched_article.title,
+                 "description" => searched_article.description,
+                 "body" => searched_article.body,
+                 "tagList" => searched_article.tags,
+                 "createdAt" => created_at,
+                 "updatedAt" => updated_at,
+                 "favorited" => false,
+                 "favoritesCount" => 0,
+                 "author" => %{
+                   "username" => author.username,
+                   "bio" => nil,
+                   "image" => nil,
+                   "following" => false
+                 }
+               }
+             }
+
+      refute created_at == ""
+      refute updated_at == ""
+    end
+  end
+
   describe "list articles" do
     setup [:create_author, :publish_articles]
 
