@@ -39,7 +39,7 @@ defmodule Conduit.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:commanded, "~> 0.15"},
+      {:commanded, "~> 0.16"},
       {:commanded_eventstore_adapter, "~> 0.3"},
       {:ex_machina, "~> 2.0", only: :test},
       {:uuid, "~> 1.1"},
@@ -49,7 +49,8 @@ defmodule Conduit.Mixfile do
       {:vex, "~> 0.6"},
       {:bcrypt_elixir, "~> 1.0"},
       {:comeonin, "~> 4.0"},
-      {:guardian, "~> 0.14"}
+      {:guardian, "~> 0.14"},
+      {:slugger, "~> 0.2"}
     ]
   end
 
