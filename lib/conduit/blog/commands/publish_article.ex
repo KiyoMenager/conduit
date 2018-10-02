@@ -17,11 +17,21 @@ defmodule Conduit.Blog.Commands.PublishArticle do
   validates(:author_uuid, uuid: true)
 
   validates(
-    :username,
+    :slug,
     presence: true,
-    format: [with: ~r/^[a-z0-9]+$/, allow_nil: true, allow_blank: true, message: "is invalid"],
+    format: [
+      with: ~r/^[a-z0-9\-]+$/,
+      allow_nil: true,
+      allow_blank: true,
+      message: "is invalid"
+    ],
     string: true
   )
+
+  validates(:title, presence: [message: "can't be empty"], string: true)
+  validates(:description, presence: [message: "can't be empty"], string: true)
+  validates(:body, presence: [message: "can't be empty"], string: true)
+  validates(:tags, by: &is_list/1)
 
   @doc """
   Assigns a unique identity

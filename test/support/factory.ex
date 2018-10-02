@@ -19,13 +19,22 @@ defmodule Conduit.Factory do
     |> RegisterUser.new()
   end
 
+  def author_factory do
+    %{
+      user_uuid: UUID.uuid4(),
+      username: "sebastian",
+      bio: "I like music",
+      image: "https://i.stack.imgur.com/xHWG8.jpg"
+    }
+  end
+
   def article_factory do
     %{
       slug: "how-to-train-your-dragon",
       title: "How to train your dragon",
       description: "Ever wonder how?",
       body: "You have to believe",
-      tag_list: ["dragons", "training"],
+      tags: ["dragons", "training"],
       author_uuid: UUID.uuid4()
     }
   end
@@ -34,6 +43,7 @@ defmodule Conduit.Factory do
 
   def publish_article_factory do
     build(:article)
+    |> Map.put(:article_uuid, UUID.uuid4())
     |> PublishArticle.new()
   end
 end

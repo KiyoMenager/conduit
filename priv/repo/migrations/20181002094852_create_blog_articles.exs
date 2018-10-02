@@ -18,5 +18,10 @@ defmodule Conduit.Repo.Migrations.CreateBlogArticles do
 
       timestamps()
     end
+
+    create(unique_index(:blog_articles, [:slug]))
+    create(index(:blog_articles, [:author_uuid]))
+    create(index(:blog_articles, [:author_username]))
+    create(index(:blog_articles, [:published_at]))
   end
 end

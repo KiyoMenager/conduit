@@ -9,11 +9,11 @@ defmodule Conduit.BlogTest do
   describe "publish article" do
     @tag :integration
     test "should succeed with valid data", %{author: author} do
-      article_attrs = build(:article)
-      assert %Article{} = article = Blog.publish_article(author, article_attrs)
+      article_attrs = build(:article, title: "title")
+      assert {:ok, %Article{} = article} = Blog.publish_article(author, article_attrs)
 
-      assert article.slug == article_attrs.slug
       assert article.title == article_attrs.title
+      assert article.slug =~ article_attrs.title
       assert article.description == article_attrs.description
       assert article.body == article_attrs.body
 
@@ -25,22 +25,15 @@ defmodule Conduit.BlogTest do
 
     @tag :integration
     test "should generate unique URL slug", %{author: author} do
-      title = ""
+      title = "title"
       attrs = build(:article, title: title)
 
-      assert %Article{} = article_0 = Blog.publish_article(author, attrs)
+      assert {:ok, %Article{} = article_0} = Blog.publish_article(author, attrs)
+      assert article_0.slug =~ title
 
-      assert article_0.slug == title
-
-      assert %Article{} = article_1 = Blog.publish_article(author, attrs)
-
-      assert article_1.slug == title
+      assert {:ok, %Article{} = article_1} = Blog.publish_article(author, attrs)
+      refute article_1.slug == article_0.slug
+      assert article_1.slug =~ title
     end
-  end
-
-  defp create_author(context) do
-    {:ok, author} = fixture(:author)
-
-    Map.put(context, :author, author)
   end
 end

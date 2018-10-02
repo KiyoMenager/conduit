@@ -12,7 +12,7 @@ defmodule Conduit.Router do
 
   identify(UserAggregate, by: :user_uuid, prefix: "user-")
   identify(Author, by: :author_uuid, prefix: "author-")
-  identify(Article, by: :author_uuid, prefix: "article-")
+  identify(Article, by: :article_uuid, prefix: "article-")
 
   dispatch([RegisterUser], to: UserAggregate)
   dispatch([CreateAuthor], to: Author)

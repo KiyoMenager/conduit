@@ -16,15 +16,16 @@ defmodule Conduit.Blog.Aggregates.Article do
   Publishes an article.
 
   """
-  def execute(%__MODULE__{uuid: nil}, %PublishArticle{} = publish) do
+  def execute(%__MODULE__{uuid: nil} = event, %PublishArticle{} = publish) do
     %ArticlePublished{
-      article_uuid: publish.article_uuid,
-      author_uuid: publish.author_uuid,
-      slug: publish.slug,
-      title: publish.title,
-      description: publish.description,
-      body: publish.body,
-      tags: publish.tags
+      event
+      | article_uuid: publish.article_uuid,
+        author_uuid: publish.author_uuid,
+        slug: publish.slug,
+        title: publish.title,
+        description: publish.description,
+        body: publish.body,
+        tags: publish.tags
     }
   end
 

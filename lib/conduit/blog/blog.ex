@@ -6,7 +6,7 @@ defmodule Conduit.Blog do
   import Ecto.Query, warn: false
 
   alias Conduit.Blog.Commands.{CreateAuthor, PublishArticle}
-  alias Conduit.Blog.Projections.Author
+  alias Conduit.Blog.Projections.{Author, Article}
   alias Conduit.Blog.Queries.ArticleBySlug
   alias Conduit.{Router, Repo}
 
