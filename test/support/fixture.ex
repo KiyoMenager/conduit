@@ -19,11 +19,33 @@ defmodule Conduit.Fixture do
     ]
   end
 
+  def publish_articles(%{author: author} = context) do
+    count = Map.get(context, :article_count, 2)
+
+    articles =
+      Enum.map(1..count, fn i ->
+        {:ok, article} =
+          fixture(:article, author: author, title: "article #{i}", body: "article #{i} body")
+
+        article
+      end)
+
+    [articles: articles]
+  end
+
+  def fixture(schema, attrs \\ [])
+
   def fixture(:user, attrs) do
     build(:user_aggregate, attrs) |> Accounts.register_user()
   end
 
   def fixture(:author, attrs) do
     build(:author, attrs) |> Blog.create_author()
+  end
+
+  def fixture(:article, attrs) do
+    author = Keyword.get(attrs, :author, fixture(:author))
+
+    author |> Blog.publish_article(build(:article, attrs))
   end
 end

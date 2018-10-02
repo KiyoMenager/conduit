@@ -22,6 +22,7 @@ defmodule ConduitWeb.ConnCase do
       import ConduitWeb.Router.Helpers
       import ConduitWeb.ConnHelpers
       import Conduit.Factory
+      import Conduit.Fixture
 
       # The default endpoint for testing
       @endpoint ConduitWeb.Endpoint
