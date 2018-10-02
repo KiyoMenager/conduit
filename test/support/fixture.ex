@@ -3,6 +3,12 @@ defmodule Conduit.Fixture do
 
   alias Conduit.{Accounts, Blog}
 
+  def register_user(_) do
+    {:ok, user} = fixture(:user)
+
+    [user: user]
+  end
+
   def create_author(%{user: user}) do
     {:ok, author} = fixture(:author, user_uuid: user.uuid)
 

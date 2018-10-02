@@ -3,12 +3,6 @@ defmodule ConduitWeb.UserControllerTest do
 
   import Conduit.Factory
 
-  alias Conduit.Accounts
-
-  def fixture(:user, attrs \\ []) do
-    Accounts.register_user(build(:user_aggregate, attrs))
-  end
-
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
