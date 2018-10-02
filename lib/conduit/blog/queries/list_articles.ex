@@ -50,6 +50,6 @@ defmodule Conduit.Blog.Queries.ListArticles do
   defp filter_by_tag(query, %Options{tag: nil}), do: query
 
   defp filter_by_tag(query, %Options{tag: tag}) do
-    from(a in query, where: ^tag in a.tags)
+    from(a in query, where: fragment("? @> ?", a.tags, [^tag]))
   end
 end
