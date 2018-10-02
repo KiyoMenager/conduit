@@ -6,6 +6,60 @@ defmodule Conduit.BlogTest do
 
   setup [:create_author]
 
+  describe "list articles" do
+    setup [:create_author, :publish_articles]
+
+    @tag :integration
+    @tag article_count: 2
+    test "should list articles by published date", %{articles: [article_1, article_2]} do
+      assert {[article_2, article_1], 2} == Blog.list_articles()
+    end
+
+    @tag :integration
+    @tag article_count: 2
+    test "should limit articles", %{articles: [_, article_2]} do
+      assert {[article_2], 2} == Blog.list_articles(%{limit: 1})
+    end
+
+    @tag :integration
+    @tag article_count: 2
+    test "should paginate articles", %{articles: [article_1, _]} do
+      assert {[article_1], 2} == Blog.list_articles(%{offset: 1})
+    end
+
+    @tag :integration
+    @tag article_count: 2
+    test "should filter by author", %{articles: _} do
+      assert {[], 0} == Blog.list_articles(%{author: "unknown"})
+    end
+
+    @tag :integration
+    @tag article_count: 2
+    test "should filter by author, returning only their articles", %{author: author} do
+      %{username: username} = author
+
+      assert {[article_1, article_2], 2} = Blog.list_articles(%{author: username})
+      assert %{author_username: ^username} = article_1
+      assert %{author_username: ^username} = article_2
+    end
+
+    @tag :integration
+    @tag article_count: 2
+    test "should filter by tag", %{articles: _} do
+      tag = "unknown"
+      assert {[], 0} == Blog.list_articles(%{tag: tag})
+    end
+
+    @tag :integration
+    @tag article_count: 2
+    test "should filter by tag, returning only tagged articles", %{
+      articles: [article_1, article_2]
+    } do
+      tag = Enum.random(article_1.tags)
+      assert {[^article_2, ^article_1], 2} = Blog.list_articles(%{tag: tag})
+    end
+  end
+
   describe "publish article" do
     @tag :integration
     test "should succeed with valid data", %{author: author} do

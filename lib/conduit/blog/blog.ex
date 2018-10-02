@@ -7,7 +7,7 @@ defmodule Conduit.Blog do
 
   alias Conduit.Blog.Commands.{CreateAuthor, PublishArticle}
   alias Conduit.Blog.Projections.{Author, Article}
-  alias Conduit.Blog.Queries.ArticleBySlug
+  alias Conduit.Blog.Queries.{ArticleBySlug, ListArticles}
   alias Conduit.{Router, Repo}
 
   @doc """
@@ -26,6 +26,16 @@ defmodule Conduit.Blog do
     slug
     |> ArticleBySlug.new()
     |> Repo.one()
+  end
+
+  @doc """
+  Returns most recent articles (globally by default).
+
+  Provide tag, author or favorited query parameters to filter query.
+
+  """
+  def list_articles(params \\ %{}) do
+    ListArticles.paginate(params, Repo)
   end
 
   def publish_article(author, article_params) do
