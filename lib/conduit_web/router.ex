@@ -16,6 +16,7 @@ defmodule ConduitWeb.Router do
 
     get("/articles/:slug", ArticleController, :show)
     get("/articles", ArticleController, :index)
+    post("/articles/:slug/favorite", FavoriteArticleController, :create)
     post("/articles", ArticleController, :create)
   end
 end
